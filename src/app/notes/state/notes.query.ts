@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NotesState, NotesStore } from './notes.store';
 import { QueryConfig, QueryEntity } from '@datorama/akita';
 import { combineLatestWith, map, tap} from 'rxjs/operators';
-import { combineLatest, Observable, Subject } from 'rxjs';
+import { combineLatest, Observable, Subject, of } from 'rxjs';
 import { INote, NoteStatus } from './notes.model';
 
 
@@ -30,6 +30,7 @@ export class NotesQuery extends QueryEntity<NotesState> {
         }
     ));
 
+    notes: Observable<INote[]> = of([]);
 
     filteredNotes(textFilter: Observable<string>) {
         return combineLatest([this.all$, this.statusFilter$, textFilter])

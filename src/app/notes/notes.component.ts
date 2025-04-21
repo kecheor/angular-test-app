@@ -5,7 +5,7 @@ import { NoteComponent } from './components/note/note.component';
 import { EditNoteComponent } from './components/edit/edit.component';
 import { NotesService } from './state/notes.service';
 import { INote, NoteStatus } from './state/notes.model';
-import { debounceTime, distinctUntilChanged, map, startWith, switchMap, tap} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith} from 'rxjs/operators';
 import { CurrentUserComponent } from '../auth/current/current.component';
 import { BehaviorSubject, Observable, of, } from 'rxjs';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -21,7 +21,7 @@ export class NotesComponent {
   constructor(private notesQuery: NotesQuery, private notesService: NotesService) { }
 
   @ViewChild('newNote') newNote!: EditNoteComponent;
-  searchControl = new FormControl('');
+  searchControl = new FormControl<string>('');
   
   error$: BehaviorSubject<string | null>= new BehaviorSubject<string | null>(null);
   showError(message: string) {
@@ -42,7 +42,7 @@ export class NotesComponent {
     map((value: string | null) => value ?? ''),
     map((value: string) => value.trim()),
   );
-  notes: Observable<INote[]> | undefined;
+  notes: Observable<INote[]> = of([]);
   
 
   get activeNoteId(): string | undefined {

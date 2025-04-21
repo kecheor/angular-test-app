@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { of, throwError } from "rxjs";
-import { delay, switchMap, tap } from "rxjs/operators";
+import { catchError, delay, switchMap, tap } from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -15,6 +15,7 @@ export class AuthService {
 
     return this.http.post<{token: string}>('/auth/login', { email, password })
         .pipe(
+            switchMap(response => !!response ? of(response) : throwError(() => new Error('Login failed'))),
             tap(response => console.log('login response', response)),
             switchMap(response => of(response.token))
         );

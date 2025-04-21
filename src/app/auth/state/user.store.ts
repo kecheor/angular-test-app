@@ -1,6 +1,7 @@
 import { User } from './user.model';
 import { EntityState, EntityStore, StoreConfig, ActiveState } from '@datorama/akita';
 import { Injectable } from '@angular/core';
+import { persistState } from '@datorama/akita';
 
 export interface UserState extends EntityState<User, string>, ActiveState {}
 

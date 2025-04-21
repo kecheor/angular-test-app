@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { UserQuery } from '../state/auth/user.query';
+import { UserQuery } from './state/user.query';
 
 @Injectable({
   providedIn: 'root'

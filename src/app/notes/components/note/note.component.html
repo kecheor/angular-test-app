@@ -3,6 +3,7 @@
         <div class="header">
             <h3>{{ note.title }}</h3>
             <button class="edit-button" (click)="editNote($event)">Edit</button>
+            <button class="delete-button" (click)="deleteNote($event)">Delete</button>
         </div>
     </note-header>
     <note-content>{{ note.content }}</note-content>

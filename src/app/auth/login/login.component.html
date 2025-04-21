@@ -3,35 +3,20 @@
     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
       <div class="form-group">
         <label for="email">Email</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email"
-          ngModel
-          required
-          email
-          (input)="onInputChange()"
-          placeholder="Enter your email"
-        >
+        <input type="email" id="email" name="email" ngModel required email (input)="onInputChange()"
+          placeholder="Enter your email">
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password"
-          ngModel
-          required
-          (input)="onInputChange()"
-          placeholder="Enter your password"
-        >
+        <input type="password" id="password" name="password" ngModel required (input)="onInputChange()"
+          placeholder="Enter your password">
       </div>
-
-      <div class="error-message" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </div>
-
+      @if (errorMessage | async) {
+        <div class="error-message">
+          {{ errorMessage | async }}
+        </div>
+      }
       <button type="submit" [disabled]="loginForm.invalid">Login</button>
     </form>
   </div>

@@ -1,14 +1,18 @@
 <div class="filters">
-    @if(currentUser | async) {
-        <div class="user-info">Hello {{ currentUser | async }}</div>
-    }
+    <app-current-user/>
     <div>
         <input type="checkbox" (change)="toggleCompletedFilter($event)" [checked]="completedFilter | async" />
         <label>Show completed</label>
     </div>
 </div>
+
 <div class="notes">
-    <app-edit-note (save)="addNote($event)" />
+    @if(error$ | async) {
+        <div class="error">
+            {{error$ | async }}
+        </div>
+    }
+    <app-edit-note #newNote (save)="addNote($event)" />
     @for(note of notes | async; track note.id) {
         @if(note.id === activeNoteId) {
             <app-edit-note 
@@ -17,7 +21,12 @@
                 (save)="updateNote(note, $event)"
                 (cancel)="toggleNoteEdit(null)" />
         } @else {
-            <app-note [note]="note" (edit)="toggleNoteEdit($event)" (toggle)="toggleNoteStatus($event)"></app-note>
+            <app-note 
+                [note]="note" 
+                (edit)="toggleNoteEdit($event)" 
+                (toggle)="toggleNoteStatus($event)" 
+                (delete)="deleteNote($event)"
+            ></app-note>
         }
     }
 </div>

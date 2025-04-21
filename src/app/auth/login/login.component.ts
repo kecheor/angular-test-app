@@ -1,23 +1,32 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { UserService } from '../../state/auth/user.service';
+import { UserService } from '../state/user.service';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { NgIf } from '@angular/common';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [NgIf, FormsModule]
+  imports: [FormsModule, AsyncPipe]
 })
 export class LoginComponent {
   constructor(private userService: UserService, private router: Router) {}
 
-  errorMessage: string | null =null;
+  errorMessage: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+
+  ngOnInit() {
+    this.errorMessage.subscribe({
+      next: (errorMessage) => {
+        console.log('login error', { errorMessage });
+      }
+    });
+  }
 
   onInputChange() {
-    this.errorMessage = null;
+    this.errorMessage.next(null);
   }
 
   onSubmit(form: NgForm) {
@@ -29,8 +38,10 @@ export class LoginComponent {
           form.reset();
           this.router.navigate(['/notes']);
         },
-        error: (error) => {
-          this.errorMessage = error;
+        error: (error: Error) => {
+          const message = error.toString();
+          console.error('Message', message);
+          this.errorMessage.next(message);
         }
       });
   }

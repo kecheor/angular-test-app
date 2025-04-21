@@ -4,7 +4,7 @@ import { NotesComponent } from './notes/notes.component';
 import { AuthGuard, LoginGuard } from './auth/auth.guard';
 export const routes: Routes = [
   { 
-    path: 'auth', 
+    path: 'login', 
     component: LoginComponent,
     canActivate: [LoginGuard]
   },
@@ -15,6 +15,6 @@ export const routes: Routes = [
   },
   { 
     path: '**', 
-    redirectTo: 'auth' 
+    redirectTo: 'login' 
   }
 ];

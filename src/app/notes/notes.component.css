@@ -12,12 +12,6 @@
     padding: 1rem;
 }
 
-.user-info {
-    flex: 1;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
 .filters input[type="checkbox"] {
     width: 18px;
     height: 18px;
@@ -33,3 +27,14 @@
 .filters input[type="checkbox"]:checked {
     border-color: #4CAF50;
 }
+
+.error {
+    display: flex;
+    flex: 1 1 100%;
+    padding: 1rem;
+    border: 1px solid #ff0000;
+    background-color: #ffebeb;
+    color: #ff0000;
+    justify-content: center;
+}
+

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NotesState, NotesStore } from './notes.store';
 import { QueryConfig, QueryEntity } from '@datorama/akita';
-import { combineLatestWith, map} from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { combineLatestWith, map, tap} from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { INote, NoteStatus } from './notes.model';
 
 
@@ -23,23 +23,30 @@ export class NotesQuery extends QueryEntity<NotesState> {
             switch(status)
             {
                 case NoteStatus.Active:
-                    return notes.filter((note: INote) => note.completedAt === null)
-                case NoteStatus.Completed:
-                    return notes.filter((note: INote) => note.completedAt !== null)
+                    return notes.filter((note: INote) => note.status === NoteStatus.Active)
                 default:
                     return notes
             }
         }
-    )
-);
+    ));
 
 
-
-        // filteredNotes$ = this.statusFilter$.pipe(
-    //     switchMap((statusFilter: NoteStatus | null) => {
-    //         return this.all$.pipe(
-    //             filter((n: INote) => statusFilter === null || n.status === statusFilter)
-    //         )
-    //     })
-    // )
+    filteredNotes(textFilter: Observable<string>) {
+        return combineLatest([this.all$, this.statusFilter$, textFilter])
+            .pipe(
+                map(([notes, status, textFilter]) => {
+                    const filterValue = textFilter.trim().toLowerCase();
+                    if(textFilter.trim().length > 0) 
+                    {
+                        notes = notes.filter((note: INote) => 
+                            note.title.toLowerCase().includes(filterValue) || note.content.toLowerCase().includes(filterValue));
+                    }
+                    if(status === NoteStatus.Active)
+                    {
+                        notes = notes.filter((note: INote) => note.status === NoteStatus.Active);
+                    }
+                    return notes;
+                })
+            );
+    }
 }

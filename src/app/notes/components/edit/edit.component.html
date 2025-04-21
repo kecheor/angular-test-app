@@ -1,17 +1,18 @@
-<app-base-note>
+<app-base-note [loading]="loading">
     <note-header>
         <div class="header">
-            <input type="text" [(ngModel)]="title" required maxlength="15" /> 
+            <input type="text" [(ngModel)]="title" maxlength="15" /> 
             <button class="save-button" (click)="saveNote()">Save</button>
             <button class="cancel-button" (click)="cancelEdit()">Cancel</button>
         </div>
     </note-header>
     <note-content>
         <textarea 
-        class="content"
-         [(ngModel)]="content"
-         maxlength="600"
-        ></textarea>
+            class="content"
+            [(ngModel)]="content"
+            maxlength="600"
+            >
+        </textarea>
     </note-content>
     <note-footer>
         <small>Char count: {{content.length}}</small>

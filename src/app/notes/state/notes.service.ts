@@ -29,7 +29,6 @@ export class NotesService {
       body, 
       { headers: { Authorization: `Bearer ${token}` },  observe: 'response' })
     .pipe(
-      tap((response) => { console.log(response); }),
       map((response) => {
         if (this.isErrorResponse(response)) {
           throw new Error(response.body?.error ?? 'Unknown error');
@@ -45,7 +44,13 @@ export class NotesService {
         return this.post('/notes', token, { title, content });
       }),
       tap(() => {
-        const note = { id: guid(), title, content, createdAt: new Date(), status: NoteStatus.Active } as INote;
+        const note = { 
+          id: guid(), 
+          title, 
+          content, 
+          createdAt: new Date(), 
+          status: NoteStatus.Active 
+        } as INote;
         this.notesStore.add(note);
       }
       ));

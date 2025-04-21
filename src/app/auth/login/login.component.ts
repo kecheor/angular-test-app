@@ -1,47 +1,48 @@
 import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../state/user.service';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [FormsModule, AsyncPipe]
+  imports: [FormsModule, ReactiveFormsModule]
 })
 export class LoginComponent {
   constructor(private userService: UserService, private router: Router) {}
 
-  errorMessage: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  errorMessage: string | null = null;
+
+  form = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required])
+  });
 
   ngOnInit() {
-    this.errorMessage.subscribe({
-      next: (errorMessage) => {
-        console.log('login error', { errorMessage });
-      }
-    });
+    this.form.valueChanges
+      .subscribe({
+        next: () => {
+          this.errorMessage = null;
+        }
+      });
   }
 
-  onInputChange() {
-    this.errorMessage.next(null);
-  }
-
-  onSubmit(form: NgForm) {
+  onSubmit() {
+    if (this.form.invalid) {
+      return;
+    }
     this.userService
-      .login(form.value.email, form.value.password)
+      .login(this.form.value.email || '', this.form.value.password || '')
       .pipe(first())
       .subscribe({
         next: () => {
-          form.reset();
+          this.form.reset();
           this.router.navigate(['/notes']);
         },
         error: (error: Error) => {
-          const message = error.toString();
-          console.error('Message', message);
-          this.errorMessage.next(message);
+          this.errorMessage = error?.toString() || 'Login failed!';
         }
       });
   }

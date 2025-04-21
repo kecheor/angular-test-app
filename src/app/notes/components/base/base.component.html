@@ -1,11 +1,11 @@
-<div class="note" [style.background-color]="color" (click)="onClick()">
+<div class="note" [style.background-color]="color" [class.loading]="loading | async" (click)="onClick()">
     <div class="note-header">
-        <ng-content select="note-header"/>
+        <ng-content select="note-header" />
     </div>
     <div class="note-content">
-        <ng-content select="note-content"/>
+        <ng-content select="note-content" />
     </div>
     <div class="note-footer">
-        <ng-content select="note-footer"/>
+        <ng-content select="note-footer" />
     </div>
 </div>

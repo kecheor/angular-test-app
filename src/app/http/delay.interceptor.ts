@@ -3,5 +3,5 @@ import { delay, of, tap } from "rxjs";
 
 
 export default function delayInterceptor(request: HttpRequest<any>, next: HttpHandlerFn) {
-    return next(request).pipe(tap(() => console.log("waiting")),delay(1000));
+    return next(request).pipe(tap(() => console.log("waiting", request.url)),delay(1000));
 }

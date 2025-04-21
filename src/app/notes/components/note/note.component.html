@@ -1,4 +1,4 @@
-<app-base-note [color]="noteColor" (click)="toggleNoteStatus()">
+<app-base-note [color]="noteColor" (click)="toggleNoteStatus()" [loading]="loading">
     <note-header>
         <div class="header">
             <h3>{{ note.title }}</h3>

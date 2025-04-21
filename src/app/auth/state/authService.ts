@@ -16,7 +16,6 @@ export class AuthService {
     return this.http.post<{token: string}>('/auth/login', { email, password })
         .pipe(
             switchMap(response => !!response ? of(response) : throwError(() => new Error('Login failed'))),
-            tap(response => console.log('login response', response)),
             switchMap(response => of(response.token))
         );
   }

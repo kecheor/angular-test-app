@@ -1,0 +1,20 @@
+<app-base-note [color]="noteColor" (click)="toggleNoteStatus()">
+    <note-header>
+        <div class="header">
+            <h3>{{ note.title }}</h3>
+            <button class="edit-button" (click)="editNote($event)">Edit</button>
+        </div>
+    </note-header>
+    <note-content>{{ note.content }}</note-content>
+    <note-footer>
+        <div class="footer">
+        <small>{{ note.status }} | 
+        @if (note.completedAt) {
+            Completed: {{ note.completedAt | date:'medium' }}
+        }
+        @else {
+            Created: {{ note.createdAt | date:'medium' }}
+        }</small>
+    </div>
+    </note-footer>
+</app-base-note>

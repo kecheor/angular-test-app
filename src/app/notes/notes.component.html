@@ -16,9 +16,9 @@
             {{error$ | async }}
         </div>
     }
-    <app-edit-note />
+    <app-edit-note (error)="showError($event)"/>
     @for(note of notes | async; track note.id) {
-        @if(note.id === activeNoteId) {
+        @if(note.id === (activeNoteId | async)) {
             <app-edit-note [note]="note" (error)="showError($event)" />
         } @else {
             <app-note [note]="note" (error)="showError($event)" />

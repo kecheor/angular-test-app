@@ -33,7 +33,9 @@ export class NotesComponent {
 
   ngOnInit() {
     this.notes =  this.notesQuery.filteredNotes(this.textFilter);
+    this.activeNoteId = this.notesQuery.activeNoteId$;
   }
+  
   textFilter = 
    this.searchControl.valueChanges.pipe(
     startWith(''),
@@ -43,15 +45,15 @@ export class NotesComponent {
     map((value: string) => value.trim()),
   );
   notes: Observable<INote[]> = of([]);
-  
+  activeNoteId: Observable<string | undefined> = of(undefined);
 
-  get activeNoteId(): string | undefined {
-    let result: string | undefined;
-    this.notesQuery.activeNoteId$.subscribe(id => {
-      result = id;
-    });
-    return result;
-  }
+  // get activeNoteId(): string | undefined {
+  //   let result: string | undefined;
+  //   this.notesQuery.activeNoteId$.subscribe(id => {
+  //     result = id;
+  //   });
+  //   return result;
+  // }
 
   get completedFilter() {
     return this.notesQuery.statusFilter$.pipe(
